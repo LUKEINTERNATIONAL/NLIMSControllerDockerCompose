@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  ruby_app:
+    image: ruby:2.5.3
+    container_name: ruby_app_container
+    volumes:
+      - ./apps/nlims_controller:/app
+    working_dir: /app
+    environment:
+      - RAILS_ENV=development
+    depends_on:
+      - mysql_5_6
+      - couchdb
+    # Add any additional configurations needed for your Ruby application
+
+  mysql_5_6:
+    image: mysql:5.6
+    container_name: mysql_5_6_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lims_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  couchdb:
+    image: couchdb:3.2.1
+    container_name: couchdb_container
+    ports:
+      - "5985:5984"
+    environment:
+      COUCHDB_USER: root
+      COUCHDB_PASSWORD: root
+    volumes:
+      - couchdb_data:/opt/couchdb/data
+
+volumes:
+  mysql_data:
+  couchdb_data:
