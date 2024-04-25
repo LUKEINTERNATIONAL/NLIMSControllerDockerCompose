@@ -4,12 +4,9 @@ services:
   mysql_5_6:
     image: mysql:5.6
     container_name: mysql_5_6_container
-    restart: always
+    # restart: always  # Remove or comment out this line to prevent automatic restart
     environment:
       MYSQL_ROOT_PASSWORD: root
-      # MYSQL_DATABASE: lims_db
-      # MYSQL_USER: root
-      # MYSQL_PASSWORD: root
     ports:
       - "3309:3306"
     volumes:
@@ -37,17 +34,10 @@ services:
       - BUNDLE_PATH=/bundle
     ports:
       - 3009:3000
-    # links:
-    #   - mysql_5_6
-    volumes:
-      - bundle:/bundle:Z
-      - .:/apps/nlims_controller:Z
-    restart: always
 
 volumes:
   mysql_data:
   couchdb_data:
-  bundle:
 
 networks:
   mynetwork:
